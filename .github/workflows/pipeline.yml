@@ -1,0 +1,81 @@
+name: CI/CD
+
+# Pull requests: build, install and test on the test instance.
+# Pushes to main: the same, then publish to the App Repo, wait for approval,
+# and install the published version on production.
+#
+# Every instance call goes through tools/now-sdk2.sh, which uses only scoped
+# REST APIs, so each credential is an OAuth client credentials integration
+# restricted to one auth scope:
+#   test instance: "ServiceNow SDK CICD"
+#   production:    "App Repo Deployer"
+#
+# Repository variables: SN_SDK_TEST_INSTANCE_URL, SN_SDK_PROD_INSTANCE_URL
+# Repository secrets:   SN_SDK_TEST_OAUTH_CLIENT_ID, SN_SDK_TEST_OAUTH_CLIENT_SECRET,
+#                       SN_SDK_PROD_OAUTH_CLIENT_ID, SN_SDK_PROD_OAUTH_CLIENT_SECRET
+# Environment:          "production", with required reviewers, for the approval gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: cicd-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  TEST_SUITE: Now SDK CICD Demo Suite
+
+jobs:
+  validate:
+    name: Build, install and test (test instance)
+    runs-on: ubuntu-latest
+    env:
+      SN_SDK_INSTANCE_URL: ${{ vars.SN_SDK_TEST_INSTANCE_URL }}
+      SN_SDK_OAUTH_CLIENT_ID: ${{ secrets.SN_SDK_TEST_OAUTH_CLIENT_ID }}
+      SN_SDK_OAUTH_CLIENT_SECRET: ${{ secrets.SN_SDK_TEST_OAUTH_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - name: Build (keys.ts must already be committed)
+        run: ./tools/now-sdk2.sh build --frozenKeys
+      - name: Check the credential
+        run: ./tools/now-sdk2.sh auth
+      - name: Install on the test instance
+        run: ./tools/now-sdk2.sh install
+      - name: Run the ATF suite
+        run: ./tools/now-sdk2.sh cicd testsuite run --test-suite-name "$TEST_SUITE"
+
+  publish:
+    name: Publish to the App Repo
+    needs: validate
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      SN_SDK_INSTANCE_URL: ${{ vars.SN_SDK_TEST_INSTANCE_URL }}
+      SN_SDK_OAUTH_CLIENT_ID: ${{ secrets.SN_SDK_TEST_OAUTH_CLIENT_ID }}
+      SN_SDK_OAUTH_CLIENT_SECRET: ${{ secrets.SN_SDK_TEST_OAUTH_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish (App Repo versions are immutable, so bump package.json version for each release)
+        run: ./tools/now-sdk2.sh cicd publish --dev-notes "Published by ${{ github.repository }} run ${{ github.run_number }}"
+
+  install-prod:
+    name: Install on production
+    needs: publish
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      SN_SDK_INSTANCE_URL: ${{ vars.SN_SDK_PROD_INSTANCE_URL }}
+      SN_SDK_OAUTH_CLIENT_ID: ${{ secrets.SN_SDK_PROD_OAUTH_CLIENT_ID }}
+      SN_SDK_OAUTH_CLIENT_SECRET: ${{ secrets.SN_SDK_PROD_OAUTH_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the published version from the App Repo
+        run: ./tools/now-sdk2.sh cicd install
