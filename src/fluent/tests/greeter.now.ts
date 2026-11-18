@@ -16,7 +16,7 @@ export const greeterGreetsByName = Test(
             script: `(function(outputs, steps, params, stepResult, assertEqual) {
     describe('CicdDemoGreeter', function() {
         it('greets by name', function() {
-            expect(new x_snc_cicd_demo_1.CicdDemoGreeter().greet('CI')).toBe('Hello, CI');
+            expect(new x_snc_cicd_demo_1.CicdDemoGreeter().greet('CI')).toBe('Hello 1.0.1, CI');
         });
     });
 })(outputs, steps, params, stepResult, assertEqual);

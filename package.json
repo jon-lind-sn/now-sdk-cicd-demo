@@ -1,18 +1,20 @@
 {
-    "name": "now-sdk-cicd-demo",
-    "version": "1.0.0",
-    "description": "A tiny Fluent app and a curl-based CI/CD pipeline that uses scoped client credentials",
-    "license": "UNLICENSED",
-    "imports": {
-        "#now:*": "./@types/servicenow/fluent/*/index.js"
-    },
-    "scripts": {
-        "build": "./tools/now-sdk2.sh build",
-        "deploy": "./tools/now-sdk2.sh install",
-        "test": "./tools/now-sdk2.sh cicd testsuite run --test-suite-name \"Now SDK CICD Demo 1 Suite\""
-    },
-    "devDependencies": {
-        "@servicenow/glide": "27.0.5",
-        "@servicenow/sdk": "4.13.3"
-    }
+  "name": "now-sdk-cicd-demo",
+  "version": "1.0.1",
+  "description": "A tiny Fluent app and a curl-based CI/CD pipeline that uses scoped client credentials",
+  "license": "UNLICENSED",
+  "imports": {
+    "#now:*": "./@types/servicenow/fluent/*/index.js"
+  },
+  "scripts": {
+    "build": "./tools/now-sdk2.sh build",
+    "deploy": "./tools/now-sdk2.sh install",
+    "test": "./tools/now-sdk2.sh cicd testsuite run --test-suite-name \"Now SDK CICD Demo 1 Suite\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@servicenow/glide": "27.0.5",
+    "@servicenow/sdk": "4.13.3",
+    "husky": "^9.1.7"
+  }
 }
