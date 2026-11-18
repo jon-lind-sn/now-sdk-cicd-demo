@@ -1,8 +1,8 @@
 name: CI/CD
 
-# Pull requests: build, install and test on the test instance.
-# Pushes to main: the same, then publish to the App Repo, wait for approval,
-# and install the published version on production.
+# Opening a pull request against main runs the whole pipeline: build, install
+# and test on the test instance, publish to the App Repo, wait for approval,
+# and install the published version on production. Nothing runs on a push to main.
 #
 # Every instance call goes through tools/now-sdk2.sh, which uses only scoped
 # REST APIs, so each credential is an OAuth client credentials integration
@@ -18,8 +18,7 @@ name: CI/CD
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+    types: [opened, reopened]
   workflow_dispatch:
 
 concurrency:
@@ -55,7 +54,6 @@ jobs:
   publish:
     name: Publish to the App Repo
     needs: validate
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       SN_SDK_INSTANCE_URL: ${{ vars.SN_SDK_TEST_INSTANCE_URL }}
