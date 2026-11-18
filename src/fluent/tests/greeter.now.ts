@@ -16,7 +16,7 @@ export const greeterGreetsByName = Test(
             script: `(function(outputs, steps, params, stepResult, assertEqual) {
     describe('CicdDemoGreeter', function() {
         it('greets by name', function() {
-            expect(new x_snc_cicd_demo.CicdDemoGreeter().greet('CI')).toBe('Hello, CI');
+            expect(new x_snc_cicd_demo_1.CicdDemoGreeter().greet('CI')).toBe('Hello, CI');
         });
     });
 })(outputs, steps, params, stepResult, assertEqual);
@@ -27,7 +27,7 @@ jasmine.getEnv().execute();`,
 
 export const cicdDemoSuite = TestSuite({
     $id: Now.ID['cicd_demo_suite'],
-    name: 'Now SDK CICD Demo Suite',
+    name: 'Now SDK CICD Demo 1 Suite',
     description: 'Run by the pipeline on the test instance before publishing.',
     tests: [greeterGreetsByName],
 })

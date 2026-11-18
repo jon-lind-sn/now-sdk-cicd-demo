@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  TEST_SUITE: Now SDK CICD Demo Suite
+  TEST_SUITE: Now SDK CICD Demo 1 Suite
 
 jobs:
   validate:

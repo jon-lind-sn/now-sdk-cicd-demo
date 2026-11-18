@@ -9,7 +9,7 @@
     "scripts": {
         "build": "./tools/now-sdk2.sh build",
         "deploy": "./tools/now-sdk2.sh install",
-        "test": "./tools/now-sdk2.sh cicd testsuite run --test-suite-name \"Now SDK CICD Demo Suite\""
+        "test": "./tools/now-sdk2.sh cicd testsuite run --test-suite-name \"Now SDK CICD Demo 1 Suite\""
     },
     "devDependencies": {
         "@servicenow/glide": "27.0.5",

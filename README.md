@@ -2,7 +2,7 @@
 
 A tiny Fluent app with a Continuous Integration/Continuous Delivery (CI/CD) pipeline that reaches the instance only through scoped REST APIs. Each pipeline credential is an OAuth client credentials integration restricted to one auth scope, and the service account can be a machine identity.
 
-The app is one script include (`CicdDemoGreeter`) and one Automated Test Framework (ATF) suite ("Now SDK CICD Demo Suite").
+The app is one script include (`CicdDemoGreeter`) and one Automated Test Framework (ATF) suite ("Now SDK CICD Demo 1 Suite").
 
 ## How It Works
 
