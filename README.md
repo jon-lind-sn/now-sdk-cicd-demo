@@ -21,10 +21,10 @@ It needs bash, curl and python3, and reads the same variables the Now SDK uses i
 
 ## Pipeline
 
-`.github/workflows/pipeline.yml`:
-
-1. Pull requests and pushes to `main`: build, install and run the ATF suite on the test instance with the "ServiceNow SDK CICD" credential.
-2. Pushes to `main`: publish to the Application Repository (App Repo), wait for approval on the `production` environment, then install the published version on production with the "App Repo Deployer" credential.
+1. `pr-validation.yml` runs on every pull request to `main`: build, install and run the ATF suite on the test instance with the "ServiceNow SDK CICD" credential. Nothing is published.
+2. A ruleset on `main` requires a pull request and a passing validation check, so a pull request can't be merged until its tests pass.
+3. `deploy-main.yml` runs when the pull request is merged: validate again, publish to the Application Repository (App Repo), wait for approval on the `production` environment, then install the published version on production with the "App Repo Deployer" credential.
+4. Both call `_validate.yml`, so the test steps are defined once.
 
 App Repo versions are immutable, so bump `version` in `package.json` for each release.
 
