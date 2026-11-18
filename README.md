@@ -1,5 +1,7 @@
 # Now SDK CI/CD Demo
 
+> **This is a demo of a proof of concept (POC), not a supported product.** It shows a ServiceNow capability that is still in development. The pipeline depends on instance-side components that are not included in this repository and are not generally available, so it will not run on your instance as is. If you want more information, contact your ServiceNow account executive and ask them to reach out to Jon Lind.
+
 A tiny Fluent app with a Continuous Integration/Continuous Delivery (CI/CD) pipeline that reaches the instance only through scoped REST APIs. Each pipeline credential is an OAuth client credentials integration restricted to one auth scope, and the service account can be a machine identity.
 
 The app is one script include (`CicdDemoGreeter`) and one Automated Test Framework (ATF) suite ("Now SDK CICD Demo 1 Suite").
@@ -17,7 +19,7 @@ The app is one script include (`CicdDemoGreeter`) and one Automated Test Framewo
 | `cicd publish`, `cicd install`, `cicd rollback` | `sn_cicd/app_repo/*` |
 | Anything else | Passed to the stock Now SDK |
 
-It needs bash, curl and python3, and reads the same variables the Now SDK uses in CI mode: `SN_SDK_INSTANCE_URL`, `SN_SDK_OAUTH_CLIENT_ID` and `SN_SDK_OAUTH_CLIENT_SECRET`. The test instance needs the app that ships the `now_sdk` API and the "ServiceNow SDK CICD" and "App Repo Deployer" auth scopes.
+It needs bash, curl and python3, and reads the same variables the Now SDK uses in CI mode: `SN_SDK_INSTANCE_URL`, `SN_SDK_OAUTH_CLIENT_ID` and `SN_SDK_OAUTH_CLIENT_SECRET`. The instances also need the POC components described in the notice at the top: the `now_sdk` REST API and the "ServiceNow SDK CICD" and "App Repo Deployer" auth scopes.
 
 ## Pipeline
 
