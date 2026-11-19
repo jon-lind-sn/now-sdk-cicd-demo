@@ -1,7 +1,7 @@
 name: Deploy to production
 
-# Runs when a pull request that changes the app or its pipeline is merged into
-# main (a push to main; README and docs changes do not deploy). Validates the
+# Runs when a pull request that changes the published app is merged into
+# main (a push to main; README, docs, tools and workflow changes do not deploy). Validates the
 # merged code on the test instance, publishes it to the App Repo, waits for
 # approval on the "production" environment, then installs the published version
 # on production.
@@ -20,8 +20,6 @@ on:
     branches: [main]
     paths:
       - 'src/**'
-      - 'tools/**'
-      - '.github/workflows/**'
       - 'package.json'
       - 'package-lock.json'
       - 'now.config.json'
