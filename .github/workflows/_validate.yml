@@ -18,8 +18,8 @@ jobs:
       SN_SDK_OAUTH_CLIENT_SECRET: ${{ secrets.SN_SDK_TEST_OAUTH_CLIENT_SECRET }}
       TEST_SUITE: Now SDK CICD Demo 1 Suite
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
       - run: npm ci
