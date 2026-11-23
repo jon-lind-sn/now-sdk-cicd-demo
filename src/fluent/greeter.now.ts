@@ -12,7 +12,7 @@ CicdDemoGreeter.prototype = {
     initialize: function() {},
 
     greet: function(name) {
-        return 'Hello 1.0.3, ' + name;
+        return 'Hello 1.0.5, ' + name;
     },
 
     type: 'CicdDemoGreeter'
